@@ -166,7 +166,10 @@ class PolymarketClient:
             result = await self._request("GET", url)
             return result if isinstance(result, list) else result.get("positions", [])
         except Exception as e:
-            logger.error(f"Failed to fetch positions for {wallet_address}: {e}")
+            if "404" in str(e):
+                logger.debug(f"Wallet positions not found (404): {wallet_address}")
+            else:
+                logger.error(f"Failed to fetch positions for {wallet_address}: {e}")
             return []
     
     async def get_wallet_trades(
