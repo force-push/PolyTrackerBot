@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: polytracker-postgres
+    environment:
+      POSTGRES_USER: polytracker
+      POSTGRES_PASSWORD: polytracker_dev
+      POSTGRES_DB: polytracker
+      POSTGRES_INITDB_ARGS: "-c shared_preload_libraries=pg_stat_statements"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init_postgres.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U polytracker"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - polytracker-net
+
+  polytracker:
+    build: .
+    container_name: polytracker-bot
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHANNEL_ID=${TELEGRAM_CHANNEL_ID}
+      - LOG_LEVEL=INFO
+      - DATABASE_URL=postgresql+asyncpg://polytracker:polytracker_dev@postgres:5432/polytracker
+      - USE_POSTGRES=true
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - polytracker-net
+
+networks:
+  polytracker-net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local

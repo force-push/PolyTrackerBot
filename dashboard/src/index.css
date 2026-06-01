@@ -1,0 +1,135 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Brutalist Trading UI */
+
+@layer base {
+  * {
+    @apply border-gray-900;
+  }
+
+  html {
+    @apply scroll-smooth;
+    scrollbar-width: thin;
+    scrollbar-color: #404040 #0a0a0a;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-black;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-800 hover:bg-gray-700 rounded;
+  }
+
+  body {
+    @apply bg-black text-white;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    letter-spacing: 0.02em;
+  }
+
+  /* Customize scrollbar for signal feed */
+  .max-h-64 {
+    scrollbar-color: #404040 transparent;
+  }
+}
+
+@layer components {
+  /* Brutalist borders */
+  .border-brutal {
+    @apply border border-gray-800;
+  }
+
+  /* Data emphasis */
+  .text-data {
+    @apply font-mono font-semibold tracking-tight;
+  }
+
+  /* Neon accent (use sparingly) */
+  .accent-neon {
+    @apply text-cyan-400 font-bold;
+  }
+
+  /* Dark card with gradient */
+  .card-dark {
+    @apply bg-gradient-to-br from-black via-zinc-900 to-black border border-gray-800 rounded-sm;
+  }
+
+  /* Pulsing indicator */
+  @keyframes pulse-strong {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  .pulse-strong {
+    animation: pulse-strong 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+/* Typography */
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+}
+
+/* Smooth transitions */
+button,
+[role='button'] {
+  @apply transition-colors duration-200;
+}
+
+/* Status animations */
+@keyframes status-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
+.status-alive {
+  animation: status-pulse 2s infinite;
+}
+
+/* Grid background pattern (subtle) */
+body {
+  background-image: linear-gradient(0deg, transparent 24%, rgba(255, 0, 0, 0.01) 25%, rgba(255, 0, 0, 0.01) 26%, transparent 27%, transparent 74%, rgba(255, 0, 0, 0.01) 75%, rgba(255, 0, 0, 0.01) 76%, transparent 77%, transparent),
+    linear-gradient(90deg, transparent 24%, rgba(255, 0, 0, 0.01) 25%, rgba(255, 0, 0, 0.01) 26%, transparent 27%, transparent 74%, rgba(255, 0, 0, 0.01) 75%, rgba(255, 0, 0, 0.01) 76%, transparent 77%, transparent);
+  background-size: 50px 50px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 1024px) {
+  body {
+    font-size: 13px;
+  }
+}
+
+/* Focus states */
+button:focus-visible {
+  @apply outline-2 outline-offset-2 outline-cyan-400;
+}
+
+/* Selection styling */
+::selection {
+  @apply bg-cyan-400/30 text-white;
+}
+
+::-moz-selection {
+  @apply bg-cyan-400/30 text-white;
+}
